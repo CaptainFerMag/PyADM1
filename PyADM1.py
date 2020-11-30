@@ -14,6 +14,9 @@ import numpy as np
 import scipy.optimize
 import scipy.integrate
 import copy
+## unit for each parameter is commented after it is declared (inline)
+## if the suggested value for the parameter is different -
+## in the original ADM1 report by Batstone et al (2002) the original value is commented after the unit (inline)
 
 ##constant definition from the pdf
 R =  0.083145 #bar.M^-1.K^-1
@@ -110,7 +113,7 @@ Tad =  308.15 #K
 
 K_w =  10 ** -14.0 * np.exp((55900 / (100 * R)) * (1 / T_base - 1 / Tad)) #M #2.08 * 10 ^ -14
 
-K_a_va =  10 ** -4.86 #M #1.38 * 10 ^ -5
+K_a_va =  10 ** -4.86 #M  ADM1 value = 1.38 * 10 ^ -5
 K_a_bu =  10 ** -4.82 #M #1.5 * 10 ^ -5
 K_a_pro =  10 ** -4.88 #M #1.32 * 10 ^ -5
 K_a_ac =  10 ** -4.76 #M #1.74 * 10 ^ -5
@@ -138,7 +141,7 @@ V_gas =  300 #m^3
 V_ad = V_liq + V_gas #m^-3
 
 ##variable definition
-# Steady-state input values for BSM2 ADM1 from the pdf
+# Steady-state input values (influent/feed) for BSM2 ADM1 from the pdf
 S_su_in = 0.01 #kg COD.m^-3
 S_aa_in = 0.001 #kg COD.m^-3
 S_fa_in = 0.001 #kg COD.m^-3
@@ -170,7 +173,7 @@ S_anion_in = 0.02 #kmole.m^-3
 
 
 #scipy ADM1 input array from java and pdf
-# initiate variables
+# initiate variables (initial values for the reactor state at t0)
 Q_ad =  170.0 #m^-3.d^-1
 S_su = 0.0119548 #kg COD.m^-3
 S_aa = 0.0053147 #kg COD.m^-3
@@ -201,7 +204,7 @@ X_I = 25.617395 #kg COD.m^-3
 S_cation = 0.04000 #kmole.m^-3
 S_anion = 0.02 #kmole.m^-3
 
-#######.....
+
 pH = 7.4655377
 S_H_ion = 0.00000003423 #kmole H.m^-3
 S_va_ion = 0.0115962  #kg COD.m^-3
@@ -210,16 +213,16 @@ S_pro_ion = 0.0157427 #kg COD.m^-3
 S_ac_ion = 0.197241 #kg COD.m^-3
 S_hco3_ion = 0.142777 #kmole C.m^-3
 S_nh3 = 0.004090 #kmole N.m^-3
-#S_nh4_ion = 0.126138 #kmole N.m^-3
-S_co2 = 0.0093003 #kmole C.m^-3
+#S_nh4_ion = 0.126138 #kmole N.m^-3 the initial value is from Rosen et al (2006) BSM2 report and it is calculated further down and does not need to be initiated
+#S_co2 = 0.0093003 #kmole C.m^-3 the initial value is from Rosen et al (2006) BSM2 report and it is calculated further down and does not need to be initiated
 S_gas_h2 = 1.02 * 10 ** -5 #kg COD.m^-3
 S_gas_ch4 = 1.625 #kg COD.m^-3
 S_gas_co2 = 0.01415 #kmole C.m^-3
 
 
-# related to pH inhibition from pdf, moved up here so they are global variables to avoid repeating them in DAE part
+# related to pH inhibition taken from BSM2 report, they are global variables to avoid repeating them in DAE part
 K_pH_aa =  (10 ** (-1 * (pH_LL_aa + pH_UL_aa) / 2.0))
-nn_aa =  (3.0 / (pH_UL_aa - pH_LL_aa)) #we need a differece between N_aa and n_aa although Python is case
+nn_aa =  (3.0 / (pH_UL_aa - pH_LL_aa)) #we need a differece between N_aa and n_aa to avoid typos and nn_aa refers to n_aa in BSM2 report
 K_pH_ac =  (10 ** (-1 * (pH_LL_ac + pH_UL_ac) / 2.0))
 n_ac =  (3.0 / (pH_UL_ac - pH_LL_ac))
 K_pH_h2 =  (10 ** (-1 * (pH_LL_h2 + pH_UL_h2) / 2.0))
@@ -247,8 +250,8 @@ I_10 =  (I_pH_aa * I_IN_lim * I_h2_pro)
 I_11 =  (I_pH_ac * I_IN_lim * I_nh3)
 I_12 =  (I_pH_h2 * I_IN_lim)
 
-# biochemical process rates from pdf
-Rho_1 =  (k_dis * X_xc)  # Disin***tegration
+# biochemical process rates from BSM2 report 
+Rho_1 =  (k_dis * X_xc)  # Disintegration
 Rho_2 =  (k_hyd_ch * X_ch)  # Hydrolysis of carbohydrates
 Rho_3 =  (k_hyd_pr * X_pr)  # Hydrolysis of proteins
 Rho_4 =  (k_hyd_li * X_li)  # Hydrolysis of lipids
@@ -268,7 +271,7 @@ Rho_17 =  (k_dec_X_pro * X_pro)  # Decay of X_pro
 Rho_18 =  (k_dec_X_ac * X_ac)  # Decay of X_ac
 Rho_19 =  (k_dec_X_h2 * X_h2)  # Decay of X_h2
 
-# acid-base rates for the BSM2 ODE implementation from pdf
+# acid-base rates for the BSM2 ODE implementation from BSM2 report
 Rho_A_4 =  (k_A_B_va * (S_va_ion * (K_a_va + S_H_ion) - K_a_va * S_va))
 Rho_A_5 =  (k_A_B_bu * (S_bu_ion * (K_a_bu + S_H_ion) - K_a_bu * S_bu))
 Rho_A_6 =  (k_A_B_pro * (S_pro_ion * (K_a_pro + S_H_ion) - K_a_pro * S_pro))
@@ -276,33 +279,25 @@ Rho_A_7 =  (k_A_B_ac * (S_ac_ion * (K_a_ac + S_H_ion) - K_a_ac * S_ac))
 Rho_A_10 =  (k_A_B_co2 * (S_hco3_ion * (K_a_co2 + S_H_ion) - K_a_co2 * S_IC))
 Rho_A_11 =  (k_A_B_IN * (S_nh3 * (K_a_IN + S_H_ion) - K_a_IN * S_IN))
 
-# gas phase algebraic equations from pdf
+# gas phase algebraic equations from BSM2 report
 p_gas_h2 =  (S_gas_h2 * R * T_op / 16)
 p_gas_ch4 =  (S_gas_ch4 * R * T_op / 64)
 p_gas_co2 =  (S_gas_co2 * R * T_op)
 
 
 P_gas =  (p_gas_h2 + p_gas_ch4 + p_gas_co2 + p_gas_h2o)
-# q_gas =  (k_p * (P_gas - P_atm) * (P_gas / P_atm))
 q_gas =  (k_p * (P_gas - P_atm))
+
 if q_gas < 0.0 :  q_gas = 0
 
 
-# gas transfer rates from pdf
+# gas transfer rates from BSM2 report
 Rho_T_8 =  (k_L_a * (S_h2 - 16 * K_H_h2 * p_gas_h2))
 Rho_T_9 =  (k_L_a * (S_ch4 - 64 * K_H_ch4 * p_gas_ch4))
 Rho_T_10 =  (k_L_a * (S_co2 - K_H_co2 * p_gas_co2))
 
 
-# print("S_nh4_ion =", S_nh4_ion)
-# print("S_co2 =", S_co2)
-# print("P_gas =" , P_gas)
-# print("Q_gas =" , q_gas)
-# print("P_gas_h2 =" , p_gas_h2)
-# print("P_gas_ch4 =" , p_gas_ch4)
-# print("P_gas_co2 =", p_gas_co2)
-
-##differential equaitons from pdf
+##differential equations from BSM2 report
 # differential equations 1 to 12 (soluble matter)
 diff_S_su = Q_ad / V_liq * (S_su_in - S_su) + Rho_2 + (1 - f_fa_li) * Rho_4 - Rho_5  # eq1
 
@@ -323,7 +318,7 @@ diff_S_h2 = Q_ad / V_liq * (S_h2_in - S_h2) + (1 - Y_su) * f_h2_su * Rho_5 + (1 
 diff_S_ch4 = Q_ad / V_liq * (S_ch4_in - S_ch4) + (1 - Y_ac) * Rho_11 + (1 - Y_h2) * Rho_12 - Rho_T_9  # eq9
 
 
-## eq10 ##
+## begin eq10 ##
 s_1 =  (-1 * C_xc + f_sI_xc * C_sI + f_ch_xc * C_ch + f_pr_xc * C_pr + f_li_xc * C_li + f_xI_xc * C_xI)
 s_2 =  (-1 * C_ch + C_su)
 s_3 =  (-1 * C_pr + C_aa)
@@ -340,114 +335,57 @@ s_13 =  (-1 * C_bac + C_xc)
 
 Sigma =  (s_1 * Rho_1 + s_2 * Rho_2 + s_3 * Rho_3 + s_4 * Rho_4 + s_5 * Rho_5 + s_6 * Rho_6 + s_7 * Rho_7 + s_8 * Rho_8 + s_9 * Rho_9 + s_10 * Rho_10 + s_11 * Rho_11 + s_12 * Rho_12 + s_13 * (Rho_13 + Rho_14 + Rho_15 + Rho_16 + Rho_17 + Rho_18 + Rho_19))
 
-diff_S_IC = Q_ad / V_liq * (S_IC_in - S_IC) - Sigma - Rho_T_10 ## eq10 ##
+diff_S_IC = Q_ad / V_liq * (S_IC_in - S_IC) - Sigma - Rho_T_10 
+## end eq10 ##
 
 
 diff_S_IN = Q_ad / V_liq * (S_IN_in - S_IN) - Y_su * N_bac * Rho_5 + (N_aa - Y_aa * N_bac) * Rho_6 - Y_fa * N_bac * Rho_7 - Y_c4 * N_bac * Rho_8 - Y_c4 * N_bac * Rho_9 - Y_pro * N_bac * Rho_10 - Y_ac * N_bac * Rho_11 - Y_h2 * N_bac * Rho_12 + (N_bac - N_xc) * (Rho_13 + Rho_14 + Rho_15 + Rho_16 + Rho_17 + Rho_18 + Rho_19) + (N_xc - f_xI_xc * N_I - f_sI_xc * N_I - f_pr_xc * N_aa) * Rho_1  # eq11
 
 diff_S_I = Q_ad / V_liq * (S_I_in - S_I) + f_sI_xc * Rho_1  # eq12
 
-
-# print("dSsu_dt = ", diff_S_su)
-# print("dSaa_dt = ", diff_S_aa)
-# print("dSfa_dt = ", diff_S_fa)
-# print("dSva_dt = ", diff_S_va)
-# print("dSbu_dt = ", diff_S_bu)
-# print("dSpro_dt = ", diff_S_pro)
-# print("dSac_dt = ", diff_S_ac)
-# print("dSh2_dt = ", diff_S_h2)
-# print("dSch4_dt = ", diff_S_ch4)
-# print("dSIC_dt = ", diff_S_IC)
-# print("dSIN_dt = ", diff_S_IN)
-# print("dSI_dt = ", diff_S_I)
-
 # Differential equations 13 to 24 (particulate matter)
 
 diff_X_xc = Q_ad / V_liq * (X_xc_in - X_xc) - Rho_1 + Rho_13 + Rho_14 + Rho_15 + Rho_16 + Rho_17 + Rho_18 + Rho_19  # eq13
 
 diff_X_ch = Q_ad / V_liq * (X_ch_in - X_ch) + f_ch_xc * Rho_1 - Rho_2  # eq14
-
 diff_X_pr = Q_ad / V_liq * (X_pr_in - X_pr) + f_pr_xc * Rho_1 - Rho_3  # eq15
-
 diff_X_li = Q_ad / V_liq * (X_li_in - X_li) + f_li_xc * Rho_1 - Rho_4  # eq16
-
 diff_X_su = Q_ad / V_liq * (X_su_in - X_su) + Y_su * Rho_5 - Rho_13  # eq17
-
 diff_X_aa = Q_ad / V_liq * (X_aa_in - X_aa) + Y_aa * Rho_6 - Rho_14  # eq18
-
 diff_X_fa = Q_ad / V_liq * (X_fa_in - X_fa) + Y_fa * Rho_7 - Rho_15  # eq19
-
 diff_X_c4 = Q_ad / V_liq * (X_c4_in - X_c4) + Y_c4 * Rho_8 + Y_c4 * Rho_9 - Rho_16  # eq20
-
 diff_X_pro = Q_ad / V_liq * (X_pro_in - X_pro) + Y_pro * Rho_10 - Rho_17  # eq21
-
 diff_X_ac = Q_ad / V_liq * (X_ac_in - X_ac) + Y_ac * Rho_11 - Rho_18  # eq22
-
 diff_X_h2 = Q_ad / V_liq * (X_h2_in - X_h2) + Y_h2 * Rho_12 - Rho_19  # eq23
-
 diff_X_I = Q_ad / V_liq * (X_I_in - X_I) + f_xI_xc * Rho_1  # eq24
-
-# print("dXxc_dt =", diff_X_xc)
-# print("dXch_dt =", diff_X_ch)
-# print("dXpr_dt =", diff_X_pr)
-# print("dXli_dt =", diff_X_li)
-# print("dXsu_dt =", diff_X_su)
-# print("dXaa_dt =", diff_X_aa)
-# print("dXfa_dt =", diff_X_fa)
-# print("dXc4_dt =", diff_X_c4)
-# print("dXpro_dt =", diff_X_pro)
-# print("dXac_dt =", diff_X_ac)
-# print("dXh2_dt =", diff_X_h2)
-# print("dXI_dt =", diff_X_I)
 
 # Differential equations 25 and 26 (cations and anions)
 diff_S_cation = Q_ad / V_liq * (S_cation_in - S_cation)  # eq25
-
 diff_S_anion = Q_ad / V_liq * (S_anion_in - S_anion)  # eq26
 
 # Differential equations 27 to 32 (ion states, only for ODE implementation)
 diff_S_va_ion = -Rho_A_4  # eq27
-
 diff_S_bu_ion = -Rho_A_5  # eq28
-
 diff_S_pro_ion = -Rho_A_6  # eq29
-
 diff_S_ac_ion = -Rho_A_7  # eq30
-
 diff_S_hco3_ion = -Rho_A_10  # eq31
-
 diff_S_nh3 = -Rho_A_11  # eq32
 
-# print("dScation_dt = ", diff_S_cation)
-# print("dSanion_dt = ", diff_S_anion)
-# print("dSvaion_dt = ", diff_S_va_ion)
-# print("dSbuion_dt = ", diff_S_bu_ion)
-# print("dSproion_dt = ", diff_S_pro_ion)
-# print("dSacion_dt = ", diff_S_ac_ion)
-# print("dShco3ion_dt = ", diff_S_hco3_ion)
-# print("dSnh3_dt = ", diff_S_nh3)
-
+#hydrogen ion calculation (only for the ODE version)
 phi =  (S_cation + S_nh4_ion - S_hco3_ion - (S_ac_ion / 64) - (S_pro_ion / 112) - (S_bu_ion / 160) - (S_va_ion / 208) - S_anion)
+S_H_ion = (-1 * phi / 2) + (0.5 * np.sqrt(phi ** 2 + 4 * K_w)) 
 
-S_H_ion = (-1 * phi / 2) + (0.5 * np.sqrt(phi ** 2 + 4 * K_w)) #this is just for ODE I guess
-
+#pH equation
 pH = - np.log10(S_H_ion)
-
-# print("SHion =", S_H_ion)
-# print("pH =", pH)
 
 # Gas phase equations: Differential equations 33 to 35
 diff_S_gas_h2 = (q_gas / V_gas * -1 * S_gas_h2) + (Rho_T_8 * V_liq / V_gas)  # eq33
-
 diff_S_gas_ch4 = (q_gas / V_gas * -1 * S_gas_ch4) + (Rho_T_9 * V_liq / V_gas)  # eq34
-
 diff_S_gas_co2 = (q_gas / V_gas * -1 * S_gas_co2) + (Rho_T_10 * V_liq / V_gas)  # eq35
 
-# print("dSgasH2_dt = ", diff_S_gas_h2)
-# print("dSgasCH4_dt = ", diff_S_gas_ch4)
-# print("dSgasCO2_dt = ", diff_S_gas_co2)
 
-S0 = 666
+#TODO  S0 is to fill in the place for the first element of arrays when iterating over the elements in loops from 1 to n
+S0 = 111
 State_gradients_names = [
                    'diff_S_su',
                    'diff_S_aa',
@@ -515,7 +453,7 @@ State_gradients = [
                    diff_S_hco3_ion,
                    diff_S_nh3]
 
-# for i in range(len(State_gradients)): print(State_gradients_names[i], '=', State_gradients[i])
+#TODO
 
 States_AD_names = ['S_su',
              'S_aa',
@@ -607,8 +545,8 @@ States_AD = [S_su,
              P_gas,
              q_gas]
 
-# for i in range(len(States_AD)): print (States_AD_names[i], '=', States_AD[i])
 
+#TODO
 States_AD_zero_names = ['S_su',
              'S_aa',
              'S_fa',
@@ -687,8 +625,8 @@ States_AD_zero = [S_su,
              S_gas_ch4,
              S_gas_co2]
 
-# for i in range(len(States_AD_zero)): print (States_AD_zero_names[i], '=', States_AD_zero[i])
 
+#TODO
 States_AD_input_names = ['S_su_in',
              'S_aa_in',
              'S_fa_in',
@@ -744,12 +682,23 @@ States_AD_input = [S_su_in,
              S_anion_in]
 
 
-# for i in range(len(States_AD_input)): print (States_AD_input_names[i], '=', States_AD_input[i])
 
+#TODO
 state_input = copy.deepcopy(States_AD_input)
 state_zero = copy.deepcopy(States_AD_zero)
-len(state_zero)
+len(state_zero) 
 
+#univ.S_x > States_AD_zero > state_zero > ADM1_ODE.S_x
+#univ.S_x_in > State_AD_input > state_input > ADM1_ODE.S_x_in 
+
+#S_zero.S_X > S_Previous
+# S_previous.S_X 
+# S_ODE = copy.deepcopy(S_previous)
+# S_DAE = copy.deepcopy(S_previous)
+
+#S_next = final result
+
+#TODO state-zero scope
 def ADM1_ODE(t, state_zero):
 
   S_su = state_zero[0]
@@ -1018,65 +967,59 @@ def ADM1_ODE(t, state_zero):
 
   return diff_S_su, diff_S_aa, diff_S_fa, diff_S_va, diff_S_bu, diff_S_pro, diff_S_ac, diff_S_h2, diff_S_ch4, diff_S_IC, diff_S_IN, diff_S_I, diff_X_xc, diff_X_ch, diff_X_pr, diff_X_li, diff_X_su, diff_X_aa, diff_X_fa, diff_X_c4, diff_X_pro, diff_X_ac, diff_X_h2, diff_X_I, diff_S_cation, diff_S_anion, diff_S_H_ion, diff_S_va_ion,  diff_S_bu_ion, diff_S_pro_ion, diff_S_ac_ion, diff_S_hco3_ion, diff_S_co2,  diff_S_nh3, diff_S_nh4_ion, diff_S_gas_h2, diff_S_gas_ch4, diff_S_gas_co2
 
-#from alch example
-# simulation_time = 200 #in days
 
-# simulation_time_in_quarters = simulation_time * 24 * 4
+def simulate(t_step, solvermethod):
+  r = scipy.integrate.solve_ivp(ADM1_ODE, t_step, state_zero,method= solvermethod)
+  return r.y
 
-# tspan = (0, simulation_time)
-
-# t = np.linspace(*tspan, simulation_time_in_quarters)
-# print('tspan =', tspan)
-
+#TODO main function
 ##time definition
 days = 200
-timeSteps = days * 24 * 4
-t = np.linspace(0, days, timeSteps)
+timeSteps = days * 24 * 4 #every 15 minutes 
+t = np.linspace(0, days, timeSteps) #sequence of timesteps as fractions of days
 
+
+#TODO test ODE with DAE_switch
 DAE_switch = 1
 if DAE_switch == 0:
   solvermethod = 'Radau'
 else:
   solvermethod = 'DOP853'
-def simulate(t_step, solvermethod):
-  r = scipy.integrate.solve_ivp(ADM1_ODE, t_step, state_zero,method= solvermethod)
-  return r.y
+     
+nn=0 #to keep the timesteps for simulate_results
+simulate_results = [0] * timeSteps #acts as a log for simulation results at each timestep
 
-nn=0
-simulate_results = [0] * timeSteps
-
+#TODO main function
 for u in range(1,timeSteps):
-  # print('hiloooop')
+  
   # span for next time step
   tstep = [t[u-1],t[u]]
 
-  # solve for next step ####################
+  # solve ODE for next step 
   sim_S_su, sim_S_aa, sim_S_fa, sim_S_va, sim_S_bu, sim_S_pro, sim_S_ac, sim_S_h2, sim_S_ch4, sim_S_IC, sim_S_IN, sim_S_I, sim_X_xc, sim_X_ch, sim_X_pr, sim_X_li, sim_X_su, sim_X_aa, sim_X_fa, sim_X_c4, sim_X_pro, sim_X_ac, sim_X_h2, sim_X_I, sim_S_cation, sim_S_anion, sim_S_H_ion, sim_S_va_ion, sim_S_bu_ion, sim_S_pro_ion, sim_S_ac_ion, sim_S_hco3_ion, sim_S_co2, sim_S_nh3, sim_S_nh4_ion, sim_S_gas_h2, sim_S_gas_ch4, sim_S_gas_co2 = simulate(tstep, solvermethod)
 
-  #store simulation result states
+  #store ODE simulation result states
   S_su, S_aa, S_fa, S_va, S_bu, S_pro, S_ac, S_h2, S_ch4, S_IC, S_IN, S_I, X_xc, X_ch, X_pr, X_li, X_su, X_aa, X_fa, X_c4, X_pro, X_ac, X_h2, X_I, S_cation, S_anion, S_H_ion, S_va_ion, S_bu_ion, S_pro_ion, S_ac_ion, S_hco3_ion, S_co2, S_nh3, S_nh4_ion, S_gas_h2, S_gas_ch4, S_gas_co2 = \
   sim_S_su[-1], sim_S_aa[-1], sim_S_fa[-1], sim_S_va[-1], sim_S_bu[-1], sim_S_pro[-1], sim_S_ac[-1], sim_S_h2[-1], sim_S_ch4[-1], sim_S_IC[-1], sim_S_IN[-1], sim_S_I[-1], sim_X_xc[-1], sim_X_ch[-1], sim_X_pr[-1], sim_X_li[-1], sim_X_su[-1], sim_X_aa[-1], sim_X_fa[-1], sim_X_c4[-1], sim_X_pro[-1], sim_X_ac[-1], sim_X_h2[-1], sim_X_I[-1], sim_S_cation[-1], sim_S_anion[-1], sim_S_H_ion[-1], sim_S_va_ion[-1], sim_S_bu_ion[-1], sim_S_pro_ion[-1], sim_S_ac_ion[-1], sim_S_hco3_ion[-1], sim_S_co2[-1], sim_S_nh3[-1], sim_S_nh4_ion[-1], sim_S_gas_h2[-1], sim_S_gas_ch4[-1], sim_S_gas_co2[-1]
 
-  ##  DAE from jADM1 ######################
+  ##  DAE calculations 
   eps = 0.0000001
 
-  #prevS_H_ion = S_H_ion #previous
-  prevS_H_ion = S_H_ion #previous
+  prevS_H_ion = S_H_ion
 
+  #TODO double check solver name
+  #initial values for Newton-Rhapson solver parameter
   shdelta = 1.0
   shgradeq = 1.0
   S_h2delta = 1.0
   S_h2gradeq = 1.0
-
-  tol = 10 ** (-12)
-  maxIter = 1000
+  tol = 10 ** (-12) #solver accuracy tolerance
+  maxIter = 1000 #maximum number of iterations for solver
   i = 1
   j = 1
 
-
-  # S_H_ion
+  ## DAE solver for S_H_ion from Rosen et al. (2006)
   while ((shdelta > tol or shdelta < -tol) and (i <= maxIter)):
-    # print('hi hionnnnnnn')
     S_va_ion = K_a_va * S_va / (K_a_va + S_H_ion)
     S_bu_ion = K_a_bu * S_bu / (K_a_bu + S_H_ion)
     S_pro_ion = K_a_pro * S_pro / (K_a_pro + S_H_ion)
@@ -1095,27 +1038,26 @@ for u in range(1,timeSteps):
         S_H_ion = tol
     i+=1
 
-  # pH
+  # pH calculation
   pH = - np.log10(S_H_ion)
 
-  # S_h2
+  #DAE solver for S_h2 from Rosen et al. (2006) 
   while ((S_h2delta > tol or S_h2delta < -tol) and (j <= maxIter)):
-    # print('hi h2222222')
     I_pH_aa = (K_pH_aa ** nn_aa) / (prevS_H_ion ** nn_aa + K_pH_aa ** nn_aa)
-    # I_pH_ac =  ((K_pH_ac ** n_ac) / (S_H_ion ** n_ac + K_pH_ac ** n_ac))
+    
     I_pH_h2 = (K_pH_h2 ** n_h2) / (prevS_H_ion ** n_h2 + K_pH_h2 ** n_h2)
     I_IN_lim = 1 / (1 + (K_S_IN / S_IN))
     I_h2_fa = 1 / (1 + (S_h2 / K_I_h2_fa))
     I_h2_c4 = 1 / (1 + (S_h2 / K_I_h2_c4))
     I_h2_pro = 1 / (1 + (S_h2 / K_I_h2_pro))
-    # I_nh3 = 1 / (1 + (S_nh3 / K_I_nh3))
+    
     I_5 = I_pH_aa * I_IN_lim
     I_6 = I_5
     I_7 = I_pH_aa * I_IN_lim * I_h2_fa
     I_8 = I_pH_aa * I_IN_lim * I_h2_c4
     I_9 = I_8
     I_10 = I_pH_aa * I_IN_lim * I_h2_pro
-    # I_11 = I_pH_ac * I_IN_lim * I_nh3
+    
     I_12 = I_pH_h2 * I_IN_lim
     Rho_5 = k_m_su * (S_su / (K_S_su + S_su)) * X_su * I_5  # Uptake of sugars
     Rho_6 = k_m_aa * (S_aa / (K_S_aa + S_aa)) * X_aa * I_6  # Uptake of amino-acids
@@ -1132,7 +1074,7 @@ for u in range(1,timeSteps):
     if S_h2 <= 0:
         S_h2 = tol
     j+=1
-## DAE from jADM1
+
 
 
   state_zero = [S_su, S_aa, S_fa, S_va, S_bu, S_pro, S_ac, S_h2, S_ch4, S_IC, S_IN, S_I, X_xc, X_ch, X_pr, X_li, X_su, X_aa, X_fa, X_c4, X_pro, X_ac, X_h2, X_I, S_cation, S_anion, S_H_ion, S_va_ion, S_bu_ion, S_pro_ion, S_ac_ion, S_hco3_ion, S_co2, S_nh3, S_nh4_ion, S_gas_h2, S_gas_ch4, S_gas_co2]
@@ -1140,12 +1082,8 @@ for u in range(1,timeSteps):
   simulate_results[nn] = state_zero
   nn += 1
 
-# simulate_results_names = copy.deepcopy(States_AD_zero_names)
-# len(simulate_results)
-# simulate_results[19198][7]
-
 print('DAE_switch =', DAE_switch)
-# for i in range(0,38): print (simulate_results_names[i], '=', simulate_results[19198][i])
+
 print ('S_su =', S_su, "\n",
          'S_aa =', S_aa, "\n",
          'S_fa =', S_fa, "\n",
@@ -1184,3 +1122,5 @@ print ('S_su =', S_su, "\n",
          'S_gas_h2 =', S_gas_h2, "\n",
          'S_gas_ch4 =', S_gas_ch4, "\n",
          'S_gas_co2 =', S_gas_co2)
+
+#TODO reinforcement learning cancel? plan?
