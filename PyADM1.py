@@ -159,53 +159,54 @@ X_I_in = 25.0 #kg COD.m^-3
 S_cation_in = 0.04 #kmole.m^-3
 S_anion_in = 0.02 #kmole.m^-3
 
+Q_ad =  170.0 #m^-3.d^-1 flow rate
 
 # SciPy ADM1 input array from Pettigrew (2017) jADM1 and Rosen et al (2006) BSM2 report
 # initiate variables (initial values for the reactor state at t0)
-Q_ad =  170.0 #m^-3.d^-1
-S_su = 0.0119548 #kg COD.m^-3
-S_aa = 0.0053147 #kg COD.m^-3
-S_fa = 0.098621 #kg COD.m^-3
-S_va = 0.011625 #kg COD.m^-3
-S_bu = 0.0132507 #kg COD.m^-3
-S_pro = 0.015783 #kg COD.m^-3
-S_ac = 0.197629 #kg COD.m^-3
-S_h2 = 2 * 10 ** -7
-S_ch4 = 0.055088 #kg COD.m^-3
-S_IC = 0.152677 #kg COD.m^-3
-S_IN = 0.130229 #kmole C.m^-3
-S_I = 0.32869 #kmole N.m^-3
 
-X_xc = 0.308697 #kg COD.m^-3
-X_ch = 0.027947 #kg COD.m^-3
-X_pr = 0.102574 #kg COD.m^-3
-X_li = 0.029483 #kg COD.m^-3
-X_su = 0.420165 #kg COD.m^-3
-X_aa = 1.179171 #kg COD.m^-3
-X_fa = 0.243035 #kg COD.m^-3
-X_c4 = 0.431921 #kg COD.m^-3
-X_pro = 0.137305 #kg COD.m^-3
-X_ac = 0.760562 #kg COD.m^-3
-X_h2 = 0.317022 #kg COD.m^-3
-X_I = 25.617395 #kg COD.m^-3
+S_su = 0.012 #kg COD.m^-3 monosaccharides
+S_aa = 0.0053 #kg COD.m^-3 amino acids
+S_fa = 0.099 #kg COD.m^-3 total long chain fatty acids 
+S_va = 0.012 #kg COD.m^-3 total valerate
+S_bu = 0.013 #kg COD.m^-3 total butyrate
+S_pro = 0.016 #kg COD.m^-3 total propionate
+S_ac = 0.2 #kg COD.m^-3 total acetate
+S_h2 = 2.30 * 10 ** -7 #kg COD.m^-3 hydrogen gas 
+S_ch4 = 0.055 #kg COD.m^-3 methane gas
+S_IC = 0.15 #kmole C.m^-3 inorganic carbon
+S_IN = 0.13 #kmole N.m^-3 inorganic nitrogen
+S_I = 0.33 #kg COD.m^-3 soluble inerts
 
-S_cation = 0.04000 #kmole.m^-3
-S_anion = 0.02 #kmole.m^-3
+X_xc = 0.31 #kg COD.m^-3 composites
+X_ch = 0.028 #kg COD.m^-3 carbohydrates
+X_pr = 0.1 #kg COD.m^-3 proteins
+X_li = 0.029 #kg COD.m^-3 lipids
+X_su = 0.42 #kg COD.m^-3 sugar degraders
+X_aa = 1.18 #kg COD.m^-3 amino acid degraders 
+X_fa = 0.24 #kg COD.m^-3 LCFA degraders
+X_c4 = 0.43 #kg COD.m^-3 valerate and butyrate degraders
+X_pro = 0.14 #kg COD.m^-3 propionate degraders
+X_ac = 0.76 #kg COD.m^-3 acetate degraders
+X_h2 = 0.32 #kg COD.m^-3 hydrogen degraders
+X_I = 25.6 #kg COD.m^-3 particulate inerts
+
+S_cation = 0.040 #kmole.m^-3 cations (metallic ions, strong base)
+S_anion = 0.020 #kmole.m^-3 anions (metallic ions, strong acid)
 
 
-pH = 7.4655377
+pH = 7.4655377 
 S_H_ion = 0.00000003423 #kmole H.m^-3
-S_va_ion = 0.0115962  #kg COD.m^-3
-S_bu_ion = 0.0132208 #kg COD.m^-3
-S_pro_ion = 0.0157427 #kg COD.m^-3
-S_ac_ion = 0.197241 #kg COD.m^-3
-S_hco3_ion = 0.142777 #kmole C.m^-3
-S_nh3 = 0.004090 #kmole N.m^-3
+S_va_ion = 0.011 #kg COD.m^-3 valerate
+S_bu_ion = 0.013 #kg COD.m^-3 butyrate
+S_pro_ion = 0.016 #kg COD.m^-3 propionate
+S_ac_ion = 0.2 #kg COD.m^-3 acetate
+S_hco3_ion = 0.14 #kmole C.m^-3 bicarbonate
+S_nh3 = 0.0041 #kmole N.m^-3 ammonia
 #S_nh4_ion = 0.126138 #kmole N.m^-3 the initial value is from Rosen et al (2006) BSM2 report and it is calculated further down and does not need to be initiated
 #S_co2 = 0.0093003 #kmole C.m^-3 the initial value is from Rosen et al (2006) BSM2 report and it is calculated further down and does not need to be initiated
-S_gas_h2 = 1.02 * 10 ** -5 #kg COD.m^-3
-S_gas_ch4 = 1.625 #kg COD.m^-3
-S_gas_co2 = 0.01415 #kmole C.m^-3
+S_gas_h2 = 1.02 * 10 ** -5 #kg COD.m^-3 hydrogen concentration in gas phase
+S_gas_ch4 = 1.63 #kg COD.m^-3 methane concentration in gas phase
+S_gas_co2 = 0.014 #kmole C.m^-3 carbon dioxide concentration in gas phas
 
 
 # related to pH inhibition taken from BSM2 report, they are global variables to avoid repeating them in DAE part
@@ -216,9 +217,9 @@ n_ac =  (3.0 / (pH_UL_ac - pH_LL_ac))
 K_pH_h2 =  (10 ** (-1 * (pH_LL_h2 + pH_UL_h2) / 2.0))
 n_h2 =  (3.0 / (pH_UL_h2 - pH_LL_h2))
 
-S_nh4_ion =  (S_IN - S_nh3)
+S_nh4_ion =  0
 
-S_co2 =  (S_IC - S_hco3_ion)
+S_co2 =  0
 
 #pH equation
 pH = - np.log10(S_H_ion)
