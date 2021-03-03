@@ -13,4 +13,14 @@ C.  Ros ́en,  U.  Jeppsson,  Aspects  on  adm1  implementation  within  the217b
 
 A detailed discription of PyADM1 implementation is available as a preprint and please cite this repository and the preprint in your work:
 
+CREDIT
 
+The ADM1 model have been implemented based on the Benchmark Simulation Model number 2 (BSM2) from International Water Association (IWA). For more information about ADM1 implementation in BSM2 please follow:
+
+@article{rosen2006aspects,
+  title={Aspects on ADM1 Implementation within the BSM2 Framework},
+  author={Ros{\'e}n, Christian and Jeppsson, Ulf},
+  journal={Department of Industrial Electrical Engineering and Automation, Lund University, Lund, Sweden},
+  pages={1--35},
+  year={2006}
+}
