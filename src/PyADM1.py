@@ -1,3 +1,6 @@
+##Copyright (c) 2021 Peyman Sadrimajd##
+
+
 import numpy as np
 import scipy.optimize
 import scipy.integrate
