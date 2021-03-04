@@ -13,6 +13,17 @@ C.  Ros ́en,  U.  Jeppsson,  Aspects  on  adm1  implementation  within  the217b
 
 A detailed discription of PyADM1 implementation is available as a preprint and please cite this repository and the preprint in your work:
 
+@article {Sadrimajd2021.03.03.433746,
+	author = {Sadrimajd, Peyman and Mannion, Patrick and Howley, Enda and Lens, Piet N. L.},
+	title = {PyADM1: a Python implementation of Anaerobic Digestion Model No. 1},
+	elocation-id = {2021.03.03.433746},
+	year = {2021},
+	doi = {10.1101/2021.03.03.433746},
+	URL = {https://www.biorxiv.org/content/early/2021/03/04/2021.03.03.433746},
+	eprint = {https://www.biorxiv.org/content/early/2021/03/04/2021.03.03.433746.full.pdf},
+	journal = {bioRxiv}
+}
+
 ---------------------------------------------------------------------------------------
 
 LICENSE
