@@ -704,25 +704,25 @@ simulate_results.to_csv("dynamic_out.csv", index = False)
 
 ## ring test begin
 # to compare the resutls with the dynamic simulation data from the BSM2 Matlab implementation
-pyOut = pd.read_csv("dynamic_out.csv")
-pyIn = pd.read_csv("digester_influent.csv")
-MatlabOut = pd.read_csv("Matlabout_dyn.csv")
+# pyOut = pd.read_csv("dynamic_out.csv")
+# pyIn = pd.read_csv("digester_influent.csv")
+# MatlabOut = pd.read_csv("Matlabout_dyn.csv")
 
-pyOut.time = pyIn.time
-pyOut.Q = pyIn.Q
-MatlabOut.Q = pyOut.Q
-mvalue = pvalue = 0
-ringtest = pd.DataFrame(columns=["state", "Matlab", "Python", "error"])
+# pyOut.time = pyIn.time
+# pyOut.Q = pyIn.Q
+# MatlabOut.Q = pyOut.Q
+# mvalue = pvalue = 0
+# ringtest = pd.DataFrame(columns=["state", "Matlab", "Python", "error"])
 
-n = 0
-for i in pyOut.columns:
-  Matlabinteg = integrate.trapz(MatlabOut[i] , MatlabOut.time)
-  pyinteg = integrate.trapz(pyOut[i] , pyOut.time)
-  results =pd.DataFrame([[MatlabOut[i].name, Matlabinteg/280, pyinteg/280, abs(pyinteg-Matlabinteg)/280]], columns=["state", "Matlab", "Python", "error"])
-  ringtest = ringtest.append(results)
-  print("Matlab " + MatlabOut[i].name + " average = " + str(Matlabinteg/280) + " Python " +  pyOut[i].name + " average = " + str(pyinteg/280) + " Error =" + str(abs(pyinteg-Matlabinteg)/280))
+# n = 0
+# for i in pyOut.columns:
+#   Matlabinteg = integrate.trapz(MatlabOut[i] , MatlabOut.time)
+#   pyinteg = integrate.trapz(pyOut[i] , pyOut.time)
+#   results =pd.DataFrame([[MatlabOut[i].name, Matlabinteg/280, pyinteg/280, abs(pyinteg-Matlabinteg)/280]], columns=["state", "Matlab", "Python", "error"])
+#   ringtest = ringtest.append(results)
+#   print("Matlab " + MatlabOut[i].name + " average = " + str(Matlabinteg/280) + " Python " +  pyOut[i].name + " average = " + str(pyinteg/280) + " Error =" + str(abs(pyinteg-Matlabinteg)/280))
   
-ringtest.to_csv("ringtest.csv", index = False)
+# ringtest.to_csv("ringtest.csv", index = False)
 
 
 # for i in pyOut.columns:
