@@ -4,14 +4,14 @@ PyADM1 is a modeling and simulation tool for anaerobic digestion reactors (a.k.a
 
 In order to use PyADM1, you need Python v3 and some Python modules installed (copy, SciPy, NumPy). scipy.integrate.solve_ivp is used for solving the mdoel equations.
 
-After characterising the influent (feed) to the reactor and analyzing the inoculum (or initial conditions) of the reactor you can open the PyADM1 code and modify the influent states, initial states, simulation time, time steps, and parameters based on your data or simulation scenario. To choose between ODE and DAE forms of ADM1 set DAE_switch to 0 and 1, respectively. 
-Then, you run the PyADM1 code and it will simulate steady state operation of you reactor and print the results (reactor/effluent states) at the end of simulation time. 
+After characterising the influent (feed) to the reactor and analyzing the inoculum (or initial conditions) of the reactor you can modify the influent states, initial states, simulation time, time steps, and parameters based on your data or simulation scenario. 
+Then, you run the PyADM1 code and it will simulate dynamic operation of you reactor and print the results in dynamic_out.csv at the end of simulation time. 
 
-PyADM1 is based on ADM1 implementation in Benchmark Simulation Model number 2 (BSM2) and has beed validated with the results of steady states simulations in BSM2. For more information about BSM2 and ADM1 model, please follow:
+PyADM1 is based on ADM1 implementation in Benchmark Simulation Model number 2 (BSM2) and has beed ring tested with the BSM2 implementation in Matlab. For more information about BSM2 and ADM1 model, please follow:
 
 C.  Ros ́en,  U.  Jeppsson,  Aspects  on  adm1  implementation  within  the217bsm2 framework, Department of Industrial Electrical Engineering and218Automation, Lund University, Lund, Sweden (2006) 1–35.
 
-A detailed discription of PyADM1 implementation is available as a preprint and please cite this repository and the preprint in your work:
+please cite this software in your work:
 
 @article {Sadrimajd2021.03.03.433746,
 	author = {Sadrimajd, Peyman and Mannion, Patrick and Howley, Enda and Lens, Piet N. L.},
