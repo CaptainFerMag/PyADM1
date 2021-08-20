@@ -2,7 +2,9 @@ PyADM1: a Python implementation of the Anaerobic Digestion Model number 1
 
 PyADM1 is a modeling and simulation tool for anaerobic digestion reactors (a.k.a biogas plants). 
 
-In order to use PyADM1, you need Python v3 and some Python modules installed (copy, SciPy, NumPy). scipy.integrate.solve_ivp is used for solving the mdoel equations.
+In order to use PyADM1, you need Python v3 and a few Python modules installed (copy, SciPy, NumPy). scipy.integrate.solve_ivp is used for solving the mdoel equations.
+
+To run PyADM1 please download the src folder which contains the Python source code and the example influent/effluent files and ring test files. 
 
 After characterising the influent (feed) to the reactor and analyzing the inoculum (or initial conditions) of the reactor you can modify the influent states, initial states, simulation time, time steps, and parameters based on your data or simulation scenario. 
 Then, you run the PyADM1 code and it will simulate dynamic operation of you reactor and print the results in dynamic_out.csv at the end of simulation time. 
