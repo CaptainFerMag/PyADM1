@@ -497,7 +497,7 @@ def ADM1_ODE(t, state_zero):
 
   diff_X_pr = q_ad / V_liq * (X_pr_in - X_pr) + f_pr_xc * Rho_1 - Rho_3  # eq15 
 
-  diff_X_li = q_ad / V_liq * (X_li_in - X_li) + f_li_xc * Rho_13 - Rho_4  # eq16 
+  diff_X_li = q_ad / V_liq * (X_li_in - X_li) + f_li_xc * Rho_1 - Rho_4  # eq16 
 
   diff_X_su = q_ad / V_liq * (X_su_in - X_su) + Y_su * Rho_5 - Rho_13  # eq17
 
