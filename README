@@ -11,7 +11,7 @@ Then, you run the PyADM1 code and it will simulate dynamic operation of you reac
 
 PyADM1 is based on ADM1 implementation in Benchmark Simulation Model number 2 (BSM2) and has beed ring tested with the BSM2 implementation in Matlab. For more information about BSM2 and ADM1 model, please follow:
 
-C.  Ros ́en,  U.  Jeppsson,  Aspects  on  adm1  implementation  within  the217bsm2 framework, Department of Industrial Electrical Engineering and218Automation, Lund University, Lund, Sweden (2006) 1–35.
+C.  Ros ́en,  U.  Jeppsson,  Aspects  on  adm1  implementation  within  the bsm2 framework, Department of Industrial Electrical Engineering and Automation, Lund University, Lund, Sweden (2006) 1–35.
 
 please cite this software in your work:
 
